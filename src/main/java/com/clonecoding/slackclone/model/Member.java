@@ -14,16 +14,16 @@ public class Member {
     private Long id;
     private String useremail;
     private String password;
-    private String username;
+    private String nickname;
     @Enumerated(EnumType.STRING)
-    private Authority authority;
+    private UserRole authority;
 
     @Builder
-    public Member(String useremail, String password, Authority authority, String username) {
+    public Member(String useremail, String password, UserRole authority, String nickname) {
         this.useremail = useremail;
         this.password = password;
         this.authority = authority;
-        this.username = username;
+        this.nickname = nickname;
     }
 }
 
