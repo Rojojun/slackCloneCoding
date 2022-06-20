@@ -9,28 +9,24 @@ import com.clonecoding.slackclone.dto.TokenRequestDto;
 import com.clonecoding.slackclone.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/user")
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthService authService;
 
-    @PostMapping("/signup")
+    @PostMapping("/user/signup")
     public ResponseEntity<MemberResponseDto> signup(@RequestBody MemberRequestDto memberRequestDto) {
         return ResponseEntity.ok(authService.signup(memberRequestDto));
     }
 
-    @PostMapping("/login")
+    @PostMapping("/user/login")
     public ResponseEntity<TokenDto> login(@RequestBody MemberRequestDto memberRequestDto) {
         return ResponseEntity.ok(authService.login(memberRequestDto));
     }
 
-    @PostMapping("/reissue")
+    @PostMapping("/user/reissue")
     public ResponseEntity<TokenDto> reissue(@RequestBody TokenRequestDto tokenRequestDto) {
         return ResponseEntity.ok(authService.reissue(tokenRequestDto));
     }

@@ -6,12 +6,10 @@ import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
-@Table(name = "member")
 @Entity
 public class Member {
 
     @Id
-    @Column(name = "member_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String useremail;

@@ -9,6 +9,7 @@ import com.clonecoding.slackclone.model.Member;
 import com.clonecoding.slackclone.model.RefreshToken;
 import com.clonecoding.slackclone.repository.MemberRepository;
 import com.clonecoding.slackclone.repository.RefreshTokenRepository;
+import com.clonecoding.slackclone.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -88,5 +89,20 @@ public class AuthService {
 
         // 토큰 발급
         return tokenDto;
+    }
+
+    @Transactional(readOnly = true)
+    public MemberResponseDto getMemberInfo(String useremail) {
+        return memberRepository.findByUseremail(useremail)
+                .map(MemberResponseDto::of)
+                .orElseThrow(() -> new RuntimeException("유저 정보가 없습니다."));
+    }
+
+    // 현재 SecurityContext 에 있는 유저 정보 가져오기
+    @Transactional(readOnly = true)
+    public MemberResponseDto getMyInfo() {
+        return memberRepository.findById(SecurityUtil.getCurrentMemberId())
+                .map(MemberResponseDto::of)
+                .orElseThrow(() -> new RuntimeException("로그인 유저 정보가 없습니다."));
     }
 }
