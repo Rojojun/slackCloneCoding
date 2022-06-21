@@ -8,4 +8,11 @@
   <component name="ProjectType">
     <option name="id" value="jpab" />
   </component>
+  <component name="SuppressABINotification">
+    <option name="modulesWithSuppressedNotConfigured">
+      <set>
+        <option value="slackClone" />
+      </set>
+    </option>
+  </component>
 </project>
