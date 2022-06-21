@@ -17,7 +17,6 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/chat")
 public class ChatRoomController {
 
     private final ChatMessageService chatMessageService;
@@ -25,23 +24,28 @@ public class ChatRoomController {
     private final AuthService authService;
 
     //채팅방 생성
-    @PostMapping("/rooms")
+    @PostMapping("/api/chatting")
     public ChatRoomResponseDto createChatRoom(@RequestBody ChatRoomRequestDto requestDto) {
         log.info("requestDto = {}", requestDto);
         requestDto.setMemberId(SecurityUtil.getCurrentMemberId());
 
-        ChatRoomResponseDto chatRoom = chatRoomService.createChatRoom(requestDto);
+        ChatRoomResponseDto channel = chatRoomService.createChatRoom(requestDto);
 
-        return chatRoom;
+        return channel;
     }
 
 
     // 전체 채팅방 목록 조회
-    @GetMapping("/rooms")
+    @GetMapping("/api/chatting")
     public List<ChatRoomListDto> getAllChatRooms() {
         Member member = authService.getMemberInfo();
 
         return chatRoomService.getAllChatRooms(member);
+    }
+
+    @DeleteMapping("/api/chatting")
+    public Boolean deleteChatRoom(@PathVariable Long mid){
+        return chatRoomService.deleteChatRoom(mid);
     }
 
 

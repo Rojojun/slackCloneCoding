@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -22,8 +23,8 @@ public class ChatRoomService {
 
     //레디스 저장소 사용
     //key hashKey value 구조
-    @Resource(name = "redisTemplate")
-    private HashOperations<String, String, String> hashOpsEnterInfo;
+//    @Resource(name = "redisTemplate")
+//    private HashOperations<String, String, String> hashOpsEnterInfo;
 
     private final ChatRoomRepository chatRoomRepository;
     private final AuthService authService;
@@ -43,12 +44,22 @@ public class ChatRoomService {
     // 전체 채팅방 조회
     public List<ChatRoomListDto> getAllChatRooms(Member member) {
 
-        List<ChatRoomListDto> userChatRoom = new ArrayList<>();
+        List<ChatRoomListDto> channel = new ArrayList<>();
         for (ChatRoom chatRoom : chatRoomRepository.findAllByOrderByCreatedAtDesc()) {
             if(chatRoom.getMemberList().contains(member)){
-                userChatRoom.add(new ChatRoomListDto(chatRoom, chatRoom.getMemberList().get(0)));
+                channel.add(new ChatRoomListDto(chatRoom, chatRoom.getMemberList().get(0)));
             }
         }
-        return userChatRoom;
+        return channel;
+    }
+    public Boolean deleteChatRoom(@PathVariable Long mid){
+
+        chatRoomRepository.deleteById(mid);
+        if(authService.getMemberInfo().equals(memberRepository.findById(mid))){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }

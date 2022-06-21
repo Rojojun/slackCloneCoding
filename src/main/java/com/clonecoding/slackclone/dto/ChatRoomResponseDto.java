@@ -14,13 +14,13 @@ import java.util.Set;
 public class ChatRoomResponseDto {
 
     private Long id;
-    private String chatRoomName;
+    private String channel;
     private Member member;
 
 
     public ChatRoomResponseDto(ChatRoom chatRoom, Member member) {
         this.id = chatRoom.getId();
-        this.chatRoomName = chatRoom.getRoomName();
+        this.channel = chatRoom.getChannel();
         this.member = member;
     }
 }
