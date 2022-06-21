@@ -2,6 +2,7 @@ package com.clonecoding.slackclone.config;
 
 import com.clonecoding.slackclone.jwt.TokenProvider;
 import com.clonecoding.slackclone.model.ChatMessage;
+import com.clonecoding.slackclone.service.AuthService;
 import com.clonecoding.slackclone.service.ChatMessageService;
 import com.clonecoding.slackclone.service.ChatRoomService;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,8 @@ public class StompHandler implements ChannelInterceptor {
     private final TokenProvider tokenProvider;
     private final ChatRoomService chatRoomService;
     private final ChatMessageService chatService;
+
+    private final AuthService authService;
 
     // Controller에 가기전에 이곳을 먼저 들리게 된다. 그것이 인터셉터의 역할
     @Override
@@ -58,15 +61,16 @@ public class StompHandler implements ChannelInterceptor {
             //sessionId와 roomId를 맵핑
             chatRoomService.setUserEnterInfo(sessionId, roomId);
 
-
             // 구독했다는 것은 처음 입장했다는 것이므로 입장 메시지를 발송한다.
             // 클라이언트 입장 메시지를 채팅방에 발송한다.(redis publish)
             String token = Optional.ofNullable(accessor.getFirstNativeHeader("token")).orElse("UnknownUser");
-            String name = tokenProvider.getAuthenticationUsername(token);
+//            String name = tokenProvider.getAuthenticationUsername(token);
+            Long memberId = Long.parseLong(tokenProvider.getUserPk(token));
+            String nickname = authService.getMemberInfoInStomp(memberId).getNickname();
 //            String name = tokenProvider.getAuthentication(token).getDetails()
-            chatService.sendChatMessage(ChatMessage.builder().type(ChatMessage.MessageType.ENTER).roomId(roomId).sender(name).build());
+            chatService.sendChatMessage(ChatMessage.builder().type(ChatMessage.MessageType.ENTER).roomId(roomId).sender(nickname).build());
 
-            log.info("SUBSCRIBED {}, {}", name, roomId);
+            log.info("SUBSCRIBED {}, {}", nickname, roomId);
         }
 
 
@@ -83,8 +87,10 @@ public class StompHandler implements ChannelInterceptor {
             String token = Optional.ofNullable(accessor.getFirstNativeHeader("token")).orElse("UnknownUser");
 
             if(accessor.getFirstNativeHeader("token") != null) {
-                String name = tokenProvider.getAuthenticationUsername(token);
-                chatService.sendChatMessage(ChatMessage.builder().type(ChatMessage.MessageType.QUIT).roomId(roomId).sender(name).build());
+//                String name = tokenProvider.getAuthenticationUsername(token);
+                Long memberId = Long.parseLong(tokenProvider.getUserPk(token));
+                String nickname = authService.getMemberInfoInStomp(memberId).getNickname();
+                chatService.sendChatMessage(ChatMessage.builder().type(ChatMessage.MessageType.QUIT).roomId(roomId).sender(nickname).build());
             }
 
             // 퇴장한 클라이언트의 roomId 맵핑 정보를 삭제한다.

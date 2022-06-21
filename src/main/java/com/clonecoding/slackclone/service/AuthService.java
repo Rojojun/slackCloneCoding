@@ -118,4 +118,12 @@ public class AuthService {
                 () -> new NullPointerException("해당하는 유저 아이디가 없습니다.")
         );
     }
+
+    @Transactional(readOnly = true)
+    public Member getMemberInfoInStomp(Long memberId) {
+        return memberRepository.findById(memberId).orElseThrow(
+                () -> new NullPointerException("해당하는 유저 아이디가 없습니다.")
+        );
+    }
+}
 }

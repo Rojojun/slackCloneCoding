@@ -36,6 +36,18 @@ public class ChatRoomService {
         hashOpsEnterInfo.put(ENTER_INFO, sessionId, roomId);
     }
 
+    // 유저 세션으로 입장해 있는 채팅방 ID 조회
+    public String getUserEnterRoomId(String sessionId) {
+        return hashOpsEnterInfo.get(ENTER_INFO, sessionId);
+    }
+
+    // 유저 세션정보와 맵핑된 채팅방 ID 삭제
+    //한 유저는 하나의 룸 아이디에만 맵핑되어있다!
+    // 실시간으로 보는 방은 하나이기 떄문이다.
+    public void removeUserEnterInfo(String sessionId) {
+        hashOpsEnterInfo.delete(ENTER_INFO, sessionId);
+    }
+
 
     // 채팅방 생성
     public ChatRoomResponseDto createChatRoom(ChatRoomRequestDto requestDto) {

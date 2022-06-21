@@ -44,6 +44,17 @@ public class ChatMessage {
     private Member member;
 
     @Builder
+    public ChatMessage(MessageType type, String roomId, Long memberId, String sender, String senderEmail, String senderImg, String message, String createdAt) {
+        this.type = type;
+        this.roomId = roomId;
+        this.member = null;
+        this.memberId = memberId;
+        this.sender = sender;
+        this.message = message;
+        this.createdAt = createdAt;
+    }
+
+    @Builder
     public ChatMessage(ChatMessageRequestDto chatMessageRequestDto, AuthService authService) {
         this.type = chatMessageRequestDto.getType();
         this.roomId = chatMessageRequestDto.getRoomId();
@@ -55,5 +66,15 @@ public class ChatMessage {
         this.createdAt = chatMessageRequestDto.getCreatedAt();
     }
 
+    @Builder
+    public ChatMessage(ChatMessageRequestDto chatMessageRequestDto) {
+        this.type = chatMessageRequestDto.getType();
+        this.roomId = chatMessageRequestDto.getRoomId();
+        this.member = null;
+        this.memberId = chatMessageRequestDto.getMemberId();
+        this.sender = chatMessageRequestDto.getSender();
+        this.message = chatMessageRequestDto.getMessage();
+        this.createdAt = chatMessageRequestDto.getCreatedAt();
+    }
 
 }
