@@ -2,9 +2,14 @@ package com.clonecoding.slackclone.dto;
 
 import com.clonecoding.slackclone.model.UserRole;
 import com.clonecoding.slackclone.model.Member;
+import com.sun.istack.NotNull;
 import lombok.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 @Getter
 @AllArgsConstructor

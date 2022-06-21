@@ -1,9 +1,6 @@
 package com.clonecoding.slackclone.service;
 
-import com.clonecoding.slackclone.dto.MemberRequestDto;
-import com.clonecoding.slackclone.dto.MemberResponseDto;
-import com.clonecoding.slackclone.dto.TokenDto;
-import com.clonecoding.slackclone.dto.TokenRequestDto;
+import com.clonecoding.slackclone.dto.*;
 import com.clonecoding.slackclone.jwt.TokenProvider;
 import com.clonecoding.slackclone.model.Member;
 import com.clonecoding.slackclone.model.RefreshToken;
@@ -97,20 +94,5 @@ public class AuthService {
 
         // 토큰 발급
         return tokenDto;
-    }
-
-    @Transactional(readOnly = true)
-    public MemberResponseDto getMemberInfo(String useremail) {
-        return memberRepository.findByUseremail(useremail)
-                .map(MemberResponseDto::of)
-                .orElseThrow(() -> new RuntimeException("유저 정보가 없습니다."));
-    }
-
-    // 현재 SecurityContext 에 있는 유저 정보 가져오기
-    @Transactional(readOnly = true)
-    public MemberResponseDto getMyInfo() {
-        return memberRepository.findById(SecurityUtil.getCurrentMemberId())
-                .map(MemberResponseDto::of)
-                .orElseThrow(() -> new RuntimeException("로그인 유저 정보가 없습니다."));
     }
 }
