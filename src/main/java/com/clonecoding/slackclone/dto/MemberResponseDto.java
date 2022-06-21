@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MemberResponseDto {
     private String useremail;
+
     public static MemberResponseDto of(Member member) {
         return new MemberResponseDto(member.getUseremail());
     }

@@ -1,4 +1,4 @@
-package com.clonecoding.slackclone.conrtoller;
+package com.clonecoding.slackclone.controller;
 
 
 
