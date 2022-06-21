@@ -22,11 +22,11 @@ public class Member {
     private String useremail;
     @NotNull
     @NotBlank(message = "비밀번호 입력은 필수입니다.")
-    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d~!@#$%^&*()+|=]{6,20}$", message = "비밀번호는 숫자와 문자를 1개 이상 포함해야하며 최소 6자에서 최대 20자까지 허용합니다.")
+    //@Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d~!@#$%^&*()+|=]{6,20}$", message = "비밀번호는 숫자와 문자를 1개 이상 포함해야하며 최소 6자에서 최대 20자까지 허용합니다.")
     private String password;
     @NotNull
     @NotBlank(message = "이름 입력은 필수입니다.")
-    @Pattern(regexp = "^[a-zA-Z0-9ㄱ-ㅎ가-힣-_/]{3,10}$", message = "3~10자리의 '-','_', 한글, 알파벳만 사용 가능합니다.")
+    @Pattern(regexp = "^[a-zA-Z0-9ㄱ-ㅎ가-힣/]{2,10}$", message = "2~10자리의 한글, 알파벳만 사용 가능합니다.")
     private String nickname;
     @Enumerated(EnumType.STRING)
     private UserRole authority;
