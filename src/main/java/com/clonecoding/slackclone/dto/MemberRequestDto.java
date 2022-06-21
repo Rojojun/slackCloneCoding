@@ -1,6 +1,6 @@
 package com.clonecoding.slackclone.dto;
 
-import com.clonecoding.slackclone.model.Authority;
+import com.clonecoding.slackclone.model.UserRole;
 import com.clonecoding.slackclone.model.Member;
 import lombok.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,14 +13,14 @@ public class MemberRequestDto {
 
     private String useremail;
     private String password;
-    private String username;
+    private String nickname;
 
     public Member toMember(PasswordEncoder passwordEncoder) {
         return Member.builder()
                 .useremail(useremail)
                 .password(passwordEncoder.encode(password))
-                .authority(Authority.ROLE_USER)
-                .username(username)
+                .authority(UserRole.USER)
+                .nickname(nickname)
                 .build();
     }
 
