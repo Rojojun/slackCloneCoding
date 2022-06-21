@@ -30,6 +30,12 @@ public class ChatRoomService {
     private final MemberRepository memberRepository;
     public static final String ENTER_INFO = "ENTER_INFO"; // 채팅룸에 입장한 클라이언트의 sessionId 와 채팅룸 id 를 맵핑한 정보 저장
 
+    // 유저가 입장한 채팅방 ID 와 유저 세션 ID 맵핑 정보 저장
+    // Enter라는 곳에 sessionId와 roomId를 맵핑시켜놓음
+    public void setUserEnterInfo(String sessionId, String roomId) {
+        hashOpsEnterInfo.put(ENTER_INFO, sessionId, roomId);
+    }
+
 
     // 채팅방 생성
     public ChatRoomResponseDto createChatRoom(ChatRoomRequestDto requestDto) {
@@ -50,5 +56,15 @@ public class ChatRoomService {
             }
         }
         return userChatRoom;
+    }
+
+    // 특정 채팅방 조회
+    public ChatRoomResponseDto showChatRoom(Long roomId, Member member) {
+        ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElseThrow(
+                () -> new IllegalArgumentException("찾는 채팅방이 존재하지 않습니다.")
+        );
+
+        ChatRoomResponseDto chatRoomResponseDto = new ChatRoomResponseDto(chatRoom, member);
+        return chatRoomResponseDto;
     }
 }

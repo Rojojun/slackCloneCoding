@@ -50,4 +50,13 @@ public class ChatMessageService {
         message.setCreatedAt(chatMessage.getCreatedAt());
         chatMessageRepository.save(message);
     }
+
+    // destination 정보에서 roomId 추출
+    public String getRoomId(String destination) {
+        int lastIndex = destination.lastIndexOf('/');
+        if (lastIndex != -1)
+            return destination.substring(lastIndex + 1);
+        else
+            return "";
+    }
 }

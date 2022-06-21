@@ -24,7 +24,8 @@ public class ChatRoomController {
     private final ChatRoomService chatRoomService;
     private final AuthService authService;
 
-    //채팅방 생성
+
+    // 채팅방 생성
     @PostMapping("/rooms")
     public ChatRoomResponseDto createChatRoom(@RequestBody ChatRoomRequestDto requestDto) {
         log.info("requestDto = {}", requestDto);
@@ -43,6 +44,16 @@ public class ChatRoomController {
 
         return chatRoomService.getAllChatRooms(member);
     }
+
+
+    // 특정 채팅방 조회
+    @GetMapping("/chat/{roomId}")
+    public ChatRoomResponseDto showChatRoom(@PathVariable Long roomId) {
+        Member member = authService.getMemberInfo();
+        return chatRoomService.showChatRoom(roomId, member);
+    }
+
+
 
 
 
