@@ -9,12 +9,16 @@ import javax.persistence.*;
 @Entity
 public class Member {
 
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column
     private String useremail;
+    @Column
     private String password;
+    @Column
     private String nickname;
+    @Column
     @Enumerated(EnumType.STRING)
     private UserRole authority;
 

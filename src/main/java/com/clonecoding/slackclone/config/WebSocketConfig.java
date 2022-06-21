@@ -20,7 +20,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         this.stompHandler = stompHandler;
     }
 
-    //맨처음 설정값이라고 보면 편함
+    //맨 처음 설정값이라고 보면 편함
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
         log.info("/sub 발동");

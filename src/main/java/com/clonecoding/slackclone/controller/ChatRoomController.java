@@ -24,6 +24,12 @@ public class ChatRoomController {
     private final ChatRoomService chatRoomService;
     private final AuthService authService;
 
+    // 프론트엔드 테스트용
+    @GetMapping("/room")
+    public String rooms() {
+        return "/chat/room";
+    }
+
 
     // 채팅방 생성
     @PostMapping("/rooms")
