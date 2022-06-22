@@ -30,7 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) {
         web.ignoring()
-                .antMatchers("/h2-console/**", "/favicon.ico");
+                .antMatchers("/h2-console/**", "/favicon.ico", "/webjars/**");
     }
 
     @Override

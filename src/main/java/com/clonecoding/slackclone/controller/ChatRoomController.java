@@ -11,6 +11,7 @@ import com.clonecoding.slackclone.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,8 +28,16 @@ public class ChatRoomController {
 
     // 프론트엔드 테스트용
     @GetMapping("/room")
+//    @ResponseBody
     public String rooms() {
         return "/chat/room";
+    }
+
+    // 프론트엔드 테스트용
+    @GetMapping("/room/enter/{roomId}")
+    public String roomDetail(Model model, @PathVariable String roomId) {
+        model.addAttribute("roomId", roomId);
+        return "/chat/roomdetail";
     }
 
 
