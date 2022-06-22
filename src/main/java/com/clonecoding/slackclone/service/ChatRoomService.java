@@ -8,7 +8,6 @@ import com.clonecoding.slackclone.model.Member;
 import com.clonecoding.slackclone.repository.ChatRoomRepository;
 import com.clonecoding.slackclone.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.stereotype.Service;
 
@@ -78,5 +77,19 @@ public class ChatRoomService {
 
         ChatRoomResponseDto chatRoomResponseDto = new ChatRoomResponseDto(chatRoom, member);
         return chatRoomResponseDto;
+    }
+    public boolean deleteChatRoom(Long roomId){
+        ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElseThrow(
+                () -> new NullPointerException("해당하는 채팅방이 없습니다."));
+
+        Long memberId = chatRoom.getMemberList().get(0).getId();
+
+        if(!memberId.equals(authService.getMemberInfo().getId())) {
+            throw new IllegalArgumentException("글쓴이만 삭제가 가능합니다.");
+        }
+
+        chatRoomRepository.deleteById(roomId);
+
+        return true;
     }
 }
