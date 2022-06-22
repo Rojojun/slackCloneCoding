@@ -22,6 +22,7 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/api")
+@CrossOrigin
 public class ChatRoomController {
 
     private final ChatMessageService chatMessageService;
