@@ -8,6 +8,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -59,4 +61,16 @@ public class ChatMessageService {
         else
             return "";
     }
+
+    // 채팅방 내 메시지 전체 조회
+    public List<ChatMessage> getMessages(Long channelId) {
+        return chatMessageRepository.findByRoomId(channelId);
+    }
+
+    // 채팅방 내 메시지 전체 조회(페이지. 무한스크롤 적용)
+//    public Page<ChatMessage> getChatMessageByRoomId(String roomId, Pageable pageable) {
+//        int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() -1);
+//        pageable = PageRequest.of(page, 150);
+//        return chatMessageRepository.findByRoomId(roomId, pageable);
+//    }
 }

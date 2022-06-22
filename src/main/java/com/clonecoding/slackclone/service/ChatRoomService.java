@@ -70,16 +70,16 @@ public class ChatRoomService {
     }
 
     // 특정 채팅방 조회
-    public ChatRoomResponseDto showChatRoom(Long roomId, Member member) {
-        ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElseThrow(
+    public ChatRoomResponseDto showChatRoom(Long channelId, Member member) {
+        ChatRoom chatRoom = chatRoomRepository.findById(channelId).orElseThrow(
                 () -> new IllegalArgumentException("찾는 채팅방이 존재하지 않습니다.")
         );
 
         ChatRoomResponseDto chatRoomResponseDto = new ChatRoomResponseDto(chatRoom, member);
         return chatRoomResponseDto;
     }
-    public boolean deleteChatRoom(Long roomId){
-        ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElseThrow(
+    public boolean deleteChatRoom(Long channelId){
+        ChatRoom chatRoom = chatRoomRepository.findById(channelId).orElseThrow(
                 () -> new NullPointerException("해당하는 채팅방이 없습니다."));
 
         Long memberId = chatRoom.getMemberList().get(0).getId();
@@ -88,7 +88,7 @@ public class ChatRoomService {
             throw new IllegalArgumentException("글쓴이만 삭제가 가능합니다.");
         }
 
-        chatRoomRepository.deleteById(roomId);
+        chatRoomRepository.deleteById(channelId);
 
         return true;
     }

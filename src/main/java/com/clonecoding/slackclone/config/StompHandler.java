@@ -49,8 +49,10 @@ public class StompHandler implements ChannelInterceptor {
         //만약 COMMAND가 SUBSCRIBE 즉 메세지를 주고 받기 전 구독하는 것이라면
         else if (StompCommand.SUBSCRIBE == accessor.getCommand()) { // 채팅룸 구독요청
             // header정보에서 구독 destination정보를 얻고, roomId를 추출한다.
-            // roomId를 URL로 전송해주고 있어 추출 필요
+            // roomId를 URL로 전송해주고 있어 추출 필요.
+            // destination은 이렇게 생김 ->/sub/chat/room/{어떠한 룸 아이디}
             String destination = Optional.ofNullable((String) message.getHeaders().get("simpDestination")).orElse("InvalidRoomId");
+            log.info("message destination은={}", destination);
             String destination2 = (String) accessor.getHeader("simpDestination");
             String roomId = chatService.getRoomId(destination);
 

@@ -43,6 +43,11 @@ public class ChatMessage {
     @JoinColumn(name = "member_id_joined")
     private Member member;
 
+//    @ManyToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "chatRoom_id_joined")
+//    private ChatRoom chatRoom;
+
+
     @Builder
     public ChatMessage(MessageType type, String roomId, Long memberId, String sender, String senderEmail, String senderImg, String message, String createdAt) {
         this.type = type;

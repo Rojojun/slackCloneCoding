@@ -73,13 +73,4 @@ public class ChatMessageController {
         chatMessageService.save(chatMessage);
     }
 
-
-    // 채팅방 내 메시지 전체 조회
-    public Page<ChatMessage> getChatMessageByRoomId(String roomId, Pageable pageable) {
-        int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() -1);
-        pageable = PageRequest.of(page, 150);
-        return chatMessageRepository.findByRoomId(roomId, pageable);
-    }
-
-
 }
