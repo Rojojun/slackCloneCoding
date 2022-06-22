@@ -10,12 +10,13 @@ import com.clonecoding.slackclone.service.ChatRoomService;
 import com.clonecoding.slackclone.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Slf4j
-@RestController
+@Controller
 @RequiredArgsConstructor
 @RequestMapping("/api/chat")
 public class ChatRoomController {
@@ -32,10 +33,13 @@ public class ChatRoomController {
 
 
     // 채팅방 생성
-    @PostMapping("/rooms")
+    @PostMapping("/room")
+    @ResponseBody
     public ChatRoomResponseDto createChatRoom(@RequestBody ChatRoomRequestDto requestDto) {
         log.info("requestDto = {}", requestDto);
-        requestDto.setMemberId(SecurityUtil.getCurrentMemberId());
+//        requestDto.setMemberId(SecurityUtil.getCurrentMemberId());
+        String useremail = SecurityUtil.getCurrentUsername();
+        log.info("현재 유저의 이메일 = {}", useremail);
 
         ChatRoomResponseDto chatRoom = chatRoomService.createChatRoom(requestDto);
 
@@ -45,6 +49,7 @@ public class ChatRoomController {
 
     // 전체 채팅방 목록 조회
     @GetMapping("/rooms")
+    @ResponseBody
     public List<ChatRoomListDto> getAllChatRooms() {
         Member member = authService.getMemberInfo();
 
@@ -53,7 +58,8 @@ public class ChatRoomController {
 
 
     // 특정 채팅방 조회
-    @GetMapping("/chat/{roomId}")
+    @GetMapping("/{roomId}")
+    @ResponseBody
     public ChatRoomResponseDto showChatRoom(@PathVariable Long roomId) {
         Member member = authService.getMemberInfo();
         return chatRoomService.showChatRoom(roomId, member);

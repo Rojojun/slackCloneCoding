@@ -105,16 +105,16 @@ public class AuthService {
     }
 
     // 현재 SecurityContext 에 있는 유저 정보 가져오기
-    @Transactional(readOnly = true)
-    public MemberResponseDto getMyInfo() {
-        return memberRepository.findById(SecurityUtil.getCurrentMemberId())
-                .map(MemberResponseDto::of)
-                .orElseThrow(() -> new RuntimeException("로그인 유저 정보가 없습니다."));
-    }
+//    @Transactional(readOnly = true)
+//    public MemberResponseDto getMyInfo() {
+//        return memberRepository.findById(SecurityUtil.getCurrentMemberId())
+//                .map(MemberResponseDto::of)
+//                .orElseThrow(() -> new RuntimeException("로그인 유저 정보가 없습니다."));
+//    }
 
     @Transactional(readOnly = true)
     public Member getMemberInfo() {
-        return memberRepository.findById(SecurityUtil.getCurrentMemberId()).orElseThrow(
+        return memberRepository.findByUseremail(SecurityUtil.getCurrentUsername()).orElseThrow(
                 () -> new NullPointerException("해당하는 유저 아이디가 없습니다.")
         );
     }
