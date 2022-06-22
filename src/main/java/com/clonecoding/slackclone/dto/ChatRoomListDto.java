@@ -15,7 +15,7 @@ import java.util.Set;
 public class ChatRoomListDto {
 
     private Long id;
-    private String chatRoomName;
+    private String channel;
     private List<Member> memberList;
     private String nickname;
     private LocalDateTime createdAt;
@@ -23,7 +23,7 @@ public class ChatRoomListDto {
 
     public ChatRoomListDto(ChatRoom chatRoom, Member member) {
         this.id = chatRoom.getId();
-        this.chatRoomName = chatRoom.getRoomName();
+        this.channel = chatRoom.getChannel();
         this.memberList = chatRoom.getMemberList();
         this.nickname = member.getNickname();
         this.createdAt = chatRoom.getCreatedAt();

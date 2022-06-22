@@ -79,4 +79,15 @@ public class ChatRoomService {
         ChatRoomResponseDto chatRoomResponseDto = new ChatRoomResponseDto(chatRoom, member);
         return chatRoomResponseDto;
     }
+    public Boolean deleteChatRoom(Long roomId, Long memberid){
+        if(memberid==authService.getMemberInfo().getId()){
+            chatRoomRepository.deleteById(roomId);
+            return true;
+        }
+        else{
+            return false;
+        }
+
+
+    }
 }

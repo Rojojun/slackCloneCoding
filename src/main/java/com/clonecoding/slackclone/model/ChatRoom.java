@@ -22,15 +22,19 @@ public class ChatRoom extends Timestamped {
     private Long id;
 
     @Column(nullable = false)
-    private String roomName;
+    private String channel;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "member_id_joined")
     private List<Member> memberList = new ArrayList<>();
 
+    @ManyToOne
+    @JoinColumn(name= "member_id")
+    private Member member;
+
 
     public ChatRoom(ChatRoomRequestDto requestDto, AuthService authService){
-        this.roomName = requestDto.getRoomName();
+        this.channel = requestDto.getChannel();
         this.memberList.add(authService.getMemberInfo());
     }
 
