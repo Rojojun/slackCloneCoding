@@ -34,6 +34,7 @@ public class JwtFilter extends OncePerRequestFilter {
         if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
             Authentication authentication = tokenProvider.getAuthentication(jwt);
             SecurityContextHolder.getContext().setAuthentication(authentication);
+            log.info("토큰이 컨텍스트 홀더에 잘 저장됨. [JwtFilter]");
         } else {
             log.info("토큰이 컨텍스트 홀더에 저장되지 않았음. [JwtFilter]");
         }

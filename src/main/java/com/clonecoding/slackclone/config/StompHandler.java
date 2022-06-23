@@ -45,6 +45,7 @@ public class StompHandler implements ChannelInterceptor {
             log.info("CONNECT {}", jwtToken);
             // Header의 jwt token 검증
             tokenProvider.validateToken(jwtToken);
+            log.info("jwtToken validation 결과값={}", tokenProvider.validateToken(jwtToken));
         }
 
 
@@ -73,8 +74,8 @@ public class StompHandler implements ChannelInterceptor {
             String token = Optional.ofNullable(accessor.getFirstNativeHeader("token")).orElse("UnknownUser");
             log.info("token={} [StompHandler_SUBSCRIBE]", token);
 //            String name = tokenProvider.getAuthenticationUsername(token);
-            Long memberId = Long.parseLong(tokenProvider.getUserPk(token));
-            String nickname = authService.getMemberInfoInStomp(memberId).getNickname();
+            String useremail = tokenProvider.getUserPk(token);
+            String nickname = authService.getMemberInfoInStomp(useremail).getNickname();
 //            String name = tokenProvider.getAuthentication(token).getDetails()
             chatService.sendChatMessage(ChatMessage.builder().type(ChatMessage.MessageType.ENTER).roomId(roomId).sender(nickname).build());
 
@@ -97,8 +98,8 @@ public class StompHandler implements ChannelInterceptor {
 
             if(accessor.getFirstNativeHeader("token") != null) {
 //                String name = tokenProvider.getAuthenticationUsername(token);
-                Long memberId = Long.parseLong(tokenProvider.getUserPk(token));
-                String nickname = authService.getMemberInfoInStomp(memberId).getNickname();
+                String useremail = tokenProvider.getUserPk(token);
+                String nickname = authService.getMemberInfoInStomp(useremail).getNickname();
                 chatService.sendChatMessage(ChatMessage.builder().type(ChatMessage.MessageType.QUIT).roomId(roomId).sender(nickname).build());
             }
 

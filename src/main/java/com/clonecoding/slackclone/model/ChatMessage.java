@@ -26,7 +26,7 @@ public class ChatMessage {
     @Column
     private Long roomId;
     // 이게 String roomId 였던 이유는 코드 처음 작성한 블로거(아빠개발자)가 DB 없이 해당 채팅방 구현 예시 만들다보니 Auto Increment 되는 고유한 구분 값이 없어서
-    // roomId를 UUID 랜덤 문자열 값으로 지정했던 것이 그 이유인듯 하다. 어쨌든 해당 ChatMessage 중에 특정한 ChatRoom 에 해당되는 Messages 들을
+    // roomId를 UUID 랜덤 문자열 값으로 지정했던 것이 그 이유인듯 하다. 어쨌든 해당 ChatMessage 중에 특정한 ChatRoom 에 해당되는 Messages들을
     // 가지고 오려면 Long 형이 더 적합할 듯하여 바꿈. 2022-06-23 10:01 AM
     // StompHandler, ChatMessageRequestDto, ChatMessage, ChatMessageRepository, ChatMessageService 쪽에서 바꿈.
 

@@ -123,8 +123,8 @@ public class AuthService {
     }
 
     @Transactional(readOnly = true)
-    public Member getMemberInfoInStomp(Long memberId) {
-        return memberRepository.findById(memberId).orElseThrow(
+    public Member getMemberInfoInStomp(String useremail) {
+        return memberRepository.findByUseremail(useremail).orElseThrow(
                 () -> new NullPointerException("해당하는 유저 아이디가 없습니다.")
         );
     }
