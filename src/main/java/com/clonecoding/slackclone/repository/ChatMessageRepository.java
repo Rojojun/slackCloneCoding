@@ -8,7 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> {
+    // 이것도 사실 String roomId를 Long roomId로 바꿔줘야 할듯.
 //    Page<ChatMessage> findByRoomId(String roomId, Pageable pageable);
 
-    List<ChatMessage> findByRoomId(Long channelId);
+    List<ChatMessage> findByRoomId(Long roomId);
 }

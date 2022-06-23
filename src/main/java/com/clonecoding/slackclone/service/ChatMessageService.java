@@ -53,7 +53,7 @@ public class ChatMessageService {
         chatMessageRepository.save(message);
     }
 
-    // destination 정보에서 roomId 추출
+    // destination 정보에서 roomId 추출(String형)
     public String getRoomId(String destination) {
         int lastIndex = destination.lastIndexOf('/');
         if (lastIndex != -1)
@@ -61,6 +61,7 @@ public class ChatMessageService {
         else
             return "";
     }
+
 
     // 채팅방 내 메시지 전체 조회
     public List<ChatMessage> getMessages(Long channelId) {

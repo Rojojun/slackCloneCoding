@@ -22,7 +22,7 @@ public class ChatRoomService {
     //레디스 저장소 사용
     //key hashKey value 구조
     @Resource(name = "redisTemplate")
-    private HashOperations<String, String, String> hashOpsEnterInfo;
+    private HashOperations<String, String, Long> hashOpsEnterInfo;
 
     private final ChatRoomRepository chatRoomRepository;
     private final AuthService authService;
@@ -31,12 +31,12 @@ public class ChatRoomService {
 
     // 유저가 입장한 채팅방 ID 와 유저 세션 ID 맵핑 정보 저장
     // Enter라는 곳에 sessionId와 roomId를 맵핑시켜놓음
-    public void setUserEnterInfo(String sessionId, String roomId) {
+    public void setUserEnterInfo(String sessionId, Long roomId) {
         hashOpsEnterInfo.put(ENTER_INFO, sessionId, roomId);
     }
 
     // 유저 세션으로 입장해 있는 채팅방 ID 조회
-    public String getUserEnterRoomId(String sessionId) {
+    public Long getUserEnterRoomId(String sessionId) {
         return hashOpsEnterInfo.get(ENTER_INFO, sessionId);
     }
 
@@ -78,6 +78,8 @@ public class ChatRoomService {
         ChatRoomResponseDto chatRoomResponseDto = new ChatRoomResponseDto(chatRoom, member);
         return chatRoomResponseDto;
     }
+
+    // 특정 채팅방 삭제
     public boolean deleteChatRoom(Long channelId){
         ChatRoom chatRoom = chatRoomRepository.findById(channelId).orElseThrow(
                 () -> new NullPointerException("해당하는 채팅방이 없습니다."));

@@ -20,13 +20,13 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Component
 public class StompHandler implements ChannelInterceptor {
+
     private final TokenProvider tokenProvider;
     private final ChatRoomService chatRoomService;
     private final ChatMessageService chatService;
-
     private final AuthService authService;
 
-    // Controller에 가기전에 이곳을 먼저 들리게 된다. 그것이 인터셉터의 역할
+    // Controller에 가기전에 이곳을 먼저 들리게 된다. 그것이 인터셉터의 역할.
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
         // HTTP의 Request Response처럼
@@ -50,11 +50,13 @@ public class StompHandler implements ChannelInterceptor {
         else if (StompCommand.SUBSCRIBE == accessor.getCommand()) { // 채팅룸 구독요청
             // header정보에서 구독 destination정보를 얻고, roomId를 추출한다.
             // roomId를 URL로 전송해주고 있어 추출 필요.
-            // destination은 이렇게 생김 ->/sub/chat/room/{어떠한 룸 아이디}
+            // destination은 이렇게 생김 ->/sub/chat/room/{어떠한 룸 아이디} -> Long 형으로 바꿔보자.
             String destination = Optional.ofNullable((String) message.getHeaders().get("simpDestination")).orElse("InvalidRoomId");
             log.info("message destination은={}", destination);
             String destination2 = (String) accessor.getHeader("simpDestination");
-            String roomId = chatService.getRoomId(destination);
+//            String roomId = chatService.getRoomId(destination);
+            Long roomId = Long.parseLong(chatService.getRoomId(destination));
+            log.info("Long으로 Parsing된 roomId는={} [StompHander_SUBSCRIBE 파트]", roomId);
 
             // 채팅방에 들어온 클라이언트 sessionId를 roomId와 맵핑해 놓는다.(나중에 특정 세션이 어떤 채팅방에 들어가 있는지 알기 위함)
             // sessionId는 현재 들어와있는 유저를 확인하기 위함이다.
@@ -72,7 +74,7 @@ public class StompHandler implements ChannelInterceptor {
 //            String name = tokenProvider.getAuthentication(token).getDetails()
             chatService.sendChatMessage(ChatMessage.builder().type(ChatMessage.MessageType.ENTER).roomId(roomId).sender(nickname).build());
 
-            log.info("SUBSCRIBED {}, {}", nickname, roomId);
+            log.info("SUBSCRIBED nickname {}, roomId {}", nickname, roomId);
         }
 
 
@@ -83,7 +85,8 @@ public class StompHandler implements ChannelInterceptor {
             // 연결이 종료된 클라이언트 sesssionId로 채팅방 id를 얻는다.
             String sessionId = (String) message.getHeaders().get("simpSessionId");
             //나갈떄 redis 맵에서 roomId와 sessionId의 매핑을 끊어줘야 하기때문에 roomId 찾고
-            String roomId = chatRoomService.getUserEnterRoomId(sessionId);
+            Long roomId = chatRoomService.getUserEnterRoomId(sessionId);
+            log.info("HashOps에서 SessionId기준으로 찾아온 roomId는={} [StompHander_DISCONNECT 파트]", roomId);
 
             // 클라이언트 퇴장 메시지를 채팅방에 발송한다.(redis publish)
             String token = Optional.ofNullable(accessor.getFirstNativeHeader("token")).orElse("UnknownUser");
@@ -97,7 +100,7 @@ public class StompHandler implements ChannelInterceptor {
 
             // 퇴장한 클라이언트의 roomId 맵핑 정보를 삭제한다.
             chatRoomService.removeUserEnterInfo(sessionId);
-            log.info("DISCONNECT {}, {}", sessionId, roomId);
+            log.info("DISCONNECT SessionId {}, roomId {}", sessionId, roomId);
         }
         return message;
     }

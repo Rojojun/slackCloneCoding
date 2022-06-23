@@ -27,9 +27,6 @@ public class ChatRoom extends Timestamped {
     @JoinColumn(name = "member_id_joined")
     private List<Member> memberList = new ArrayList<>();
 
-//    @ManyToOne
-//    @JoinColumn(name= "member_id")
-//    private Member member;
 
 
     public ChatRoom(ChatRoomRequestDto requestDto, AuthService authService){

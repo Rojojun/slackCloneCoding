@@ -9,7 +9,7 @@ import lombok.Setter;
 public class ChatMessageRequestDto {
 
     private ChatMessage.MessageType type;
-    private String roomId;
+    private Long roomId;
     private Long memberId;
     private String sender;
     private String message;
