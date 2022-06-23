@@ -26,16 +26,18 @@ public class StompHandler implements ChannelInterceptor {
     private final ChatMessageService chatService;
     private final AuthService authService;
 
-    // Controller에 가기전에 이곳을 먼저 들리게 된다. 그것이 인터셉터의 역할.
+
+    // Controller 에 가기 전에 이곳을 먼저 들리게 된다. 그것이 인터셉터의 역할.
+    // HTTP의 Request / Response처럼
+    // WebSocket은 message와 channel을 갖게된다.
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
-        // HTTP의 Request Response처럼
-        // WebSocket은 message와 channel을 갖게된다.
-        // accessor 을 이용하면 내용에 패킷에 접근할 수 있게된다.
+
+        // accessor를 이용하면 내용에 패킷에 접근할 수 있게된다.
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
 
         // 접근했을때 COMMAND HEADER의 값을 확인 한다.
-        // 만약 CONNET라면 -> 초기 연결임
+        // 만약 CONNECT라면 -> 초기 연결임
         if (StompCommand.CONNECT == accessor.getCommand()) { // websocket 연결요청
             // 토큰의 값만 확인 (로그인 여부를 확인하기 위함)
             // 헤더의 토큰값을 빼오기
@@ -48,15 +50,16 @@ public class StompHandler implements ChannelInterceptor {
 
         //만약 COMMAND가 SUBSCRIBE 즉 메세지를 주고 받기 전 구독하는 것이라면
         else if (StompCommand.SUBSCRIBE == accessor.getCommand()) { // 채팅룸 구독요청
-            // header정보에서 구독 destination정보를 얻고, roomId를 추출한다.
+            // header정보에서 구독 destination 정보를 얻고, roomId를 추출한다.
             // roomId를 URL로 전송해주고 있어 추출 필요.
-            // destination은 이렇게 생김 ->/sub/chat/room/{어떠한 룸 아이디} -> Long 형으로 바꿔보자.
+            // destination은 이렇게 생김 ->/sub/chat/room/{룸 아이디}
             String destination = Optional.ofNullable((String) message.getHeaders().get("simpDestination")).orElse("InvalidRoomId");
+            log.info("message header 정보들={}", message.getHeaders());
             log.info("message destination은={}", destination);
             String destination2 = (String) accessor.getHeader("simpDestination");
 //            String roomId = chatService.getRoomId(destination);
             Long roomId = Long.parseLong(chatService.getRoomId(destination));
-            log.info("Long으로 Parsing된 roomId는={} [StompHander_SUBSCRIBE 파트]", roomId);
+            log.info("Long으로 Parsing된 roomId는={} [StompHandler_SUBSCRIBE]", roomId);
 
             // 채팅방에 들어온 클라이언트 sessionId를 roomId와 맵핑해 놓는다.(나중에 특정 세션이 어떤 채팅방에 들어가 있는지 알기 위함)
             // sessionId는 현재 들어와있는 유저를 확인하기 위함이다.
@@ -68,6 +71,7 @@ public class StompHandler implements ChannelInterceptor {
             // 구독했다는 것은 처음 입장했다는 것이므로 입장 메시지를 발송한다.
             // 클라이언트 입장 메시지를 채팅방에 발송한다.(redis publish)
             String token = Optional.ofNullable(accessor.getFirstNativeHeader("token")).orElse("UnknownUser");
+            log.info("token={} [StompHandler_SUBSCRIBE]", token);
 //            String name = tokenProvider.getAuthenticationUsername(token);
             Long memberId = Long.parseLong(tokenProvider.getUserPk(token));
             String nickname = authService.getMemberInfoInStomp(memberId).getNickname();
@@ -86,7 +90,7 @@ public class StompHandler implements ChannelInterceptor {
             String sessionId = (String) message.getHeaders().get("simpSessionId");
             //나갈떄 redis 맵에서 roomId와 sessionId의 매핑을 끊어줘야 하기때문에 roomId 찾고
             Long roomId = chatRoomService.getUserEnterRoomId(sessionId);
-            log.info("HashOps에서 SessionId기준으로 찾아온 roomId는={} [StompHander_DISCONNECT 파트]", roomId);
+            log.info("HashOps에서 SessionId기준으로 찾아온 roomId는={} [StompHandler_DISCONNECT]", roomId);
 
             // 클라이언트 퇴장 메시지를 채팅방에 발송한다.(redis publish)
             String token = Optional.ofNullable(accessor.getFirstNativeHeader("token")).orElse("UnknownUser");

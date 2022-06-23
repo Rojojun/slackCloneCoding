@@ -24,17 +24,17 @@ public class ChatMessageService {
     // 메시지 전송
     public void sendChatMessage(ChatMessage chatMessage) {
         if (ChatMessage.MessageType.ENTER.equals(chatMessage.getType())) {
-            chatMessage.setMessage("");
-            chatMessage.setSender("");
+//            chatMessage.setMessage("");
+//            chatMessage.setSender("");
             log.info("ENTER 데이터 날라갑니다~!");
-            //*chatMessage.setMessage(chatMessage.getSender() + "님이 방에 입장했습니다.");
-            //chatMessage.setSender("[알림]");*//*
+            chatMessage.setMessage(chatMessage.getSender() + "님이 방에 입장했습니다.");
+            chatMessage.setSender("[알림]");
         } else if (ChatMessage.MessageType.QUIT.equals(chatMessage.getType())) {
-            chatMessage.setMessage("");
-            chatMessage.setSender("");
+//            chatMessage.setMessage("");
+//            chatMessage.setSender("");
             log.info("QUIT 데이터 날라갑니다~!");
-            //*chatMessage.setMessage(chatMessage.getSender() + "님이 방에서 나갔습니다.");
-            //chatMessage.setSender("[알림]");
+            chatMessage.setMessage(chatMessage.getSender() + "님이 방에서 나갔습니다.");
+            chatMessage.setSender("[알림]");
         }
         //topic은 chatroom 이다.
         redisTemplate.convertAndSend(channelTopic.getTopic(), chatMessage);
