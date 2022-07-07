@@ -7,8 +7,8 @@ import com.clonecoding.slackclone.dto.TokenRequestDto;
 import com.clonecoding.slackclone.jwt.TokenProvider;
 import com.clonecoding.slackclone.model.Member;
 import com.clonecoding.slackclone.model.RefreshToken;
-import com.clonecoding.slackclone.repository.MemberRepository;
-import com.clonecoding.slackclone.repository.RefreshTokenRepository;
+import com.clonecoding.slackclone.util.repository.MemberRepository;
+import com.clonecoding.slackclone.util.repository.RefreshTokenRepository;
 import com.clonecoding.slackclone.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -57,6 +57,7 @@ public class AuthService {
         Member member = memberRepository.findByUseremail(memberRequestDto.getUseremail()).orElse(null);
         assert member != null;
         tokenDto.setNickname(member.getNickname());
+        tokenDto.setMemberId(member.getId());
 
         // 4. RefreshToken 저장
         RefreshToken refreshToken = RefreshToken.builder()

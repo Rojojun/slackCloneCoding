@@ -51,7 +51,7 @@ public class ChatRoomController {
     @PostMapping("/channel")
     @ResponseBody
     public ChatRoomResponseDto createChatRoom(@RequestBody ChatRoomRequestDto requestDto) {
-        log.info("requestDto = {}", requestDto);
+        log.info("채팅방 생성 requestDto = {}", requestDto);
 //        requestDto.setMemberId(SecurityUtil.getCurrentMemberId());
         String useremail = SecurityUtil.getCurrentUsername();
         log.info("현재 유저의 이메일 = {}", useremail);

@@ -1,4 +1,4 @@
-package com.clonecoding.slackclone.repository;
+package com.clonecoding.slackclone.util.repository;
 
 import com.clonecoding.slackclone.model.RefreshToken;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,4 +1,4 @@
-package com.clonecoding.slackclone.repository;
+package com.clonecoding.slackclone.util.repository;
 
 import com.clonecoding.slackclone.model.Member;
 import org.springframework.data.jpa.repository.JpaRepository;

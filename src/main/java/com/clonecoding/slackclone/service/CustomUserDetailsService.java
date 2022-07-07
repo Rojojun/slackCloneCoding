@@ -1,7 +1,7 @@
 package com.clonecoding.slackclone.service;
 
 import com.clonecoding.slackclone.model.Member;
-import com.clonecoding.slackclone.repository.MemberRepository;
+import com.clonecoding.slackclone.util.repository.MemberRepository;
 import com.clonecoding.slackclone.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;

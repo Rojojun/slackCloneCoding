@@ -67,7 +67,8 @@ public class ChatMessage {
         this.type = chatMessageRequestDto.getType();
         this.roomId = chatMessageRequestDto.getRoomId();
 //        this.user = authService.getMyInfo(chatMessageRequestDto.getMemberId());
-        this.member = authService.getMemberInfo();
+//        this.member = authService.getMemberInfo();
+        // authservice 확인좀....해봐야겠다... 편도랑 이야기함.
         this.memberId = chatMessageRequestDto.getMemberId();
         this.sender = chatMessageRequestDto.getSender();
         this.message = chatMessageRequestDto.getMessage();

@@ -1,9 +1,12 @@
 package com.clonecoding.slackclone.service;
 
 import com.clonecoding.slackclone.model.ChatMessage;
-import com.clonecoding.slackclone.repository.ChatMessageRepository;
+import com.clonecoding.slackclone.util.repository.ChatMessageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.stereotype.Service;
@@ -45,7 +48,8 @@ public class ChatMessageService {
         ChatMessage message = new ChatMessage();
         message.setType(chatMessage.getType());
         message.setRoomId(chatMessage.getRoomId());
-        message.setMember(authService.getMemberInfo());
+//        message.setMember(authService.getMemberInfo());
+        // 이쪽도 생각해보자. 편도랑 이야기
         message.setMemberId(chatMessage.getMemberId());
         message.setSender(chatMessage.getSender());
         message.setMessage(chatMessage.getMessage());
@@ -69,9 +73,9 @@ public class ChatMessageService {
     }
 
     // 채팅방 내 메시지 전체 조회(페이지. 무한스크롤 적용)
-//    public Page<ChatMessage> getChatMessageByRoomId(String roomId, Pageable pageable) {
-//        int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() -1);
-//        pageable = PageRequest.of(page, 150);
-//        return chatMessageRepository.findByRoomId(roomId, pageable);
-//    }
+    public Page<ChatMessage> getChatMessageByRoomId(String roomId, Pageable pageable) {
+        int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() -1);
+        pageable = PageRequest.of(page, 150);
+        return chatMessageRepository.findByRoomId(roomId, pageable);
+    }
 }
