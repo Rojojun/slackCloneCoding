@@ -37,11 +37,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) {
         web.ignoring()
+<<<<<<< HEAD
                 .antMatchers("/h2-console/**");
+=======
+                .antMatchers("/h2-console/**", "/favicon.ico", "/webjars/**");
+>>>>>>> chatting_update
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.cors().configurationSource(corsConfigurationSource());
         // CSRF 설정 Disable
         http.csrf()
                 .ignoringAntMatchers("/h2-console/**")
@@ -67,8 +72,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 로그인, 회원가입 API 는 토큰이 없는 상태에서 요청이 들어오기 때문에 permitAll 설정
                 .and()
                 .authorizeRequests()
+<<<<<<< HEAD
                 .antMatchers("/user/**").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
+=======
+
+
+
+                .antMatchers("/user/**").permitAll()
+                .antMatchers("/chatting/**").permitAll()
+
+>>>>>>> chatting_update
                 .anyRequest().authenticated()   // 나머지 API 는 전부 인증 필요
 
                 // JwtFilter 를 addFilterBefore 로 등록했던 JwtSecurityConfig 클래스를 적용
@@ -81,8 +95,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
+<<<<<<< HEAD
         configuration.addAllowedOriginPattern("http://leebok.shop.s3-website.ap-northeast-2.amazonaws.com/");
         configuration.addAllowedOriginPattern("http://localhost:3000");
+=======
+        configuration.addAllowedOriginPattern("*"); // 배포 전 모두 허용
+>>>>>>> chatting_update
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

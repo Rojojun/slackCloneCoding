@@ -11,6 +11,7 @@ public class TokenDto {
 
     private String useremail;
     private String nickname;
+    private Long memberId;  // 2022-07-06 추가. 편도랑.
     private String grantType;
     private String accessToken;
     private String refreshToken;

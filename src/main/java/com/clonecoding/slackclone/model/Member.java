@@ -13,9 +13,10 @@ import javax.validation.constraints.Pattern;
 @Entity
 public class Member {
 
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+<<<<<<< HEAD
     @NotNull
     @NotBlank(message = "이메일 입력은 필수입니다.")
     @Email(message = "이메일 형식으로 입력해 주세요.")
@@ -27,7 +28,15 @@ public class Member {
     @NotNull
     @NotBlank(message = "이름 입력은 필수입니다.")
     @Pattern(regexp = "^[a-zA-Z0-9ㄱ-ㅎ가-힣/]{2,10}$", message = "2~10자리의 한글, 알파벳만 사용 가능합니다.")
+=======
+    @Column
+    private String useremail;
+    @Column
+    private String password;
+    @Column
+>>>>>>> chatting_update
     private String nickname;
+    @Column
     @Enumerated(EnumType.STRING)
     private UserRole authority;
 

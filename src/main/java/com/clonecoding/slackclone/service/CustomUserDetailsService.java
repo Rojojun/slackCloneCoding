@@ -1,12 +1,11 @@
 package com.clonecoding.slackclone.service;
 
 import com.clonecoding.slackclone.model.Member;
-import com.clonecoding.slackclone.repository.MemberRepository;
+import com.clonecoding.slackclone.util.repository.MemberRepository;
 import com.clonecoding.slackclone.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -34,7 +33,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     private UserDetails createUserDetails(Member member) {
         GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(member.getAuthority().toString());
 
-        return new User(
+        return new org.springframework.security.core.userdetails.User(
                 String.valueOf(member.getId()),
                 member.getPassword(),
                 Collections.singleton(grantedAuthority)

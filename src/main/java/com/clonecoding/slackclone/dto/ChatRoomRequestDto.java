@@ -9,6 +9,7 @@ import lombok.ToString;
 @ToString
 public class ChatRoomRequestDto {
 
-    private String RoomName;
+    private String channel;
+//    private Long memberId;
 
 }

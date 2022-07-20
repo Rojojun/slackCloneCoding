@@ -4,19 +4,19 @@ import com.clonecoding.slackclone.dto.*;
 import com.clonecoding.slackclone.jwt.TokenProvider;
 import com.clonecoding.slackclone.model.Member;
 import com.clonecoding.slackclone.model.RefreshToken;
-import com.clonecoding.slackclone.repository.MemberRepository;
-import com.clonecoding.slackclone.repository.RefreshTokenRepository;
+import com.clonecoding.slackclone.util.repository.MemberRepository;
+import com.clonecoding.slackclone.util.repository.RefreshTokenRepository;
 import com.clonecoding.slackclone.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -40,6 +40,7 @@ public class AuthService {
     public TokenDto login(MemberRequestDto memberRequestDto) {
         // 1. Login ID/PW 를 기반으로 AuthenticationToken 생성
         UsernamePasswordAuthenticationToken authenticationToken = memberRequestDto.toAuthentication();
+        log.info("usernamePasswordAuthenticationToken={}", authenticationToken);
 
         // 2. 실제로 검증 (사용자 비밀번호 체크) 이 이루어지는 부분
         //    authenticate 메서드가 실행이 될 때 CustomUserDetailsService 에서 만들었던 loadUserByUsername 메서드가 실행됨
@@ -53,6 +54,7 @@ public class AuthService {
         Member member = memberRepository.findByUseremail(memberRequestDto.getUseremail()).orElse(null);
         assert member != null;
         tokenDto.setNickname(member.getNickname());
+        tokenDto.setMemberId(member.getId());
 
         // 4. RefreshToken 저장
         RefreshToken refreshToken = RefreshToken.builder()
@@ -95,4 +97,37 @@ public class AuthService {
         // 토큰 발급
         return tokenDto;
     }
+<<<<<<< HEAD
 }
+=======
+
+    @Transactional(readOnly = true)
+    public MemberResponseDto getMemberInfo(String useremail) {
+        return memberRepository.findByUseremail(useremail)
+                .map(MemberResponseDto::of)
+                .orElseThrow(() -> new RuntimeException("유저 정보가 없습니다."));
+    }
+
+    // 현재 SecurityContext 에 있는 유저 정보 가져오기
+//    @Transactional(readOnly = true)
+//    public MemberResponseDto getMyInfo() {
+//        return memberRepository.findById(SecurityUtil.getCurrentMemberId())
+//                .map(MemberResponseDto::of)
+//                .orElseThrow(() -> new RuntimeException("로그인 유저 정보가 없습니다."));
+//    }
+
+    @Transactional(readOnly = true)
+    public Member getMemberInfo() {
+        return memberRepository.findByUseremail(SecurityUtil.getCurrentUsername()).orElseThrow(
+                () -> new NullPointerException("해당하는 유저 아이디가 없습니다.")
+        );
+    }
+
+    @Transactional(readOnly = true)
+    public Member getMemberInfoInStomp(String useremail) {
+        return memberRepository.findByUseremail(useremail).orElseThrow(
+                () -> new NullPointerException("해당하는 유저 아이디가 없습니다.")
+        );
+    }
+}
+>>>>>>> chatting_update
